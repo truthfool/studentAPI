@@ -2,11 +2,11 @@ package com.api.students.studentmain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
 @Table
 public class StudentModel {
-    private String name;
     @Id
     @SequenceGenerator(
             name = "student_sequence",
@@ -18,26 +18,28 @@ public class StudentModel {
             generator = "student_sequence"
     )
     private int id;
+    private String name;
     private String email;
+    @Transient
     private int age;
     private LocalDate dob;
 
     public StudentModel() {
     }
 
-    public StudentModel(int id, String name, String email, int age, LocalDate dob)
+    public StudentModel(int id, String name, String email, LocalDate dob)
     {
         this.id=id;
         this.name=name;
         this.email=email;
-        this.age=age;
+//        this.age=age;
         this.dob=dob;
     }
     public StudentModel(String name,String email,int age,LocalDate dob)
     {
         this.name=name;
         this.email=email;
-        this.age=age;
+//        this.age=age;
         this.dob=dob;
     }
 
@@ -54,7 +56,8 @@ public class StudentModel {
     }
 
     public int getAge() {
-        return age;
+
+        return Period.between(this.dob,LocalDate.now()).getYears();
     }
 
     public LocalDate getDob() {
@@ -67,7 +70,6 @@ public class StudentModel {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", age=" + age +
                 ", dob=" + dob +
                 '}';
     }
